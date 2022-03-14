@@ -66,9 +66,9 @@ impl Order {
     fn total(&self) -> u32 {
         // let sum = todo!();
         let sum = 
-            self.dish_to_count.get(&Dish::ThaiChicken).cloned().unwrap_or(0) * 20
-                + self.dish_to_count.get(&Dish::Tofu).cloned().unwrap_or(0) * 15
-                + self.dish_to_count.get(&Dish::FriedRice).cloned().unwrap_or(0) * 12;
+            self.dish_to_count.get(&Dish::ThaiChicken).cloned().unwrap_or(0) * Dish::ThaiChicken.price()
+                + self.dish_to_count.get(&Dish::Tofu).cloned().unwrap_or(0) * Dish::Tofu.price()
+                + self.dish_to_count.get(&Dish::FriedRice).cloned().unwrap_or(0) * Dish::FriedRice.price();
 
         if self.is_takeaway() {
             sum + self.items_count() * TAKEAWAY_FEE
