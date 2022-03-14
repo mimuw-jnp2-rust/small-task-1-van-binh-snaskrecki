@@ -1,6 +1,6 @@
+use std::collections::HashMap;
 use std::fmt::{Display, Formatter};
 use std::io::stdin;
-use std::collections::HashMap;
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 enum Dish {
@@ -54,9 +54,16 @@ impl Order {
 
     fn items_count(&self) -> u32 {
         // todo!()
-        self.dish_to_count.get(&Dish::ThaiChicken).cloned().unwrap_or(0)
+        self.dish_to_count
+            .get(&Dish::ThaiChicken)
+            .cloned()
+            .unwrap_or(0)
             + self.dish_to_count.get(&Dish::Tofu).cloned().unwrap_or(0)
-            + self.dish_to_count.get(&Dish::FriedRice).cloned().unwrap_or(0)
+            + self
+                .dish_to_count
+                .get(&Dish::FriedRice)
+                .cloned()
+                .unwrap_or(0)
     }
 
     fn is_takeaway(&self) -> bool {
@@ -65,10 +72,19 @@ impl Order {
 
     fn total(&self) -> u32 {
         // let sum = todo!();
-        let sum = 
-            self.dish_to_count.get(&Dish::ThaiChicken).cloned().unwrap_or(0) * Dish::ThaiChicken.price()
-                + self.dish_to_count.get(&Dish::Tofu).cloned().unwrap_or(0) * Dish::Tofu.price()
-                + self.dish_to_count.get(&Dish::FriedRice).cloned().unwrap_or(0) * Dish::FriedRice.price();
+        let sum = self
+            .dish_to_count
+            .get(&Dish::ThaiChicken)
+            .cloned()
+            .unwrap_or(0)
+            * Dish::ThaiChicken.price()
+            + self.dish_to_count.get(&Dish::Tofu).cloned().unwrap_or(0) * Dish::Tofu.price()
+            + self
+                .dish_to_count
+                .get(&Dish::FriedRice)
+                .cloned()
+                .unwrap_or(0)
+                * Dish::FriedRice.price();
 
         if self.is_takeaway() {
             sum + self.items_count() * TAKEAWAY_FEE
@@ -112,9 +128,9 @@ impl VanBinh {
 
     fn add_customer(&mut self, name: String, favorite_order: Order) {
         // todo!()
-        self.customers.push(Customer { 
-            name, 
-            favorite_order 
+        self.customers.push(Customer {
+            name,
+            favorite_order,
         });
     }
 
@@ -187,8 +203,8 @@ fn main() {
                 // todo!() // use customer's favorite order
                 let mut favorite = Order::new();
                 for item in van_binh.customers.iter() {
-                    match &item.name {
-                        _name => favorite = item.favorite_order.clone(),
+                    if item.name.eq(&name) {
+                        favorite = item.favorite_order.clone();
                     }
                 }
                 favorite
@@ -200,7 +216,7 @@ fn main() {
             let order = get_order();
             if yes_no("Would you like to save this order?") {
                 // todo!() // save customer's favorite order in van_binh struct
-                van_binh.add_customer(name, order.clone()); 
+                van_binh.add_customer(name, order.clone());
             }
             order
         };
